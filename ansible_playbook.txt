@@ -1,0 +1,24 @@
+---
+- name: Connect to Cisco router and run 'show version'
+  hosts: cisco_routers
+  gather_facts: no
+  connection: network_cli
+
+  vars:
+	  ansible_connection: ansible.netcommon.network_cli
+	  ansible_user: admin
+	  ansible_password: Cisco123
+	  ansible_become: yes
+	  ansible_become_method: enable
+   	  ansible_become_password: Cisco123	  
+	  anisble_network_os: cisco.ios.ios
+    
+  tasks:
+    - name: Run 'show version' on Cisco router
+      cisco.ios.ios_command:
+        commands: show version
+      register: show_version_output
+
+    - name: Display output
+      debug:
+        var: show_version_output.stdout_lines
